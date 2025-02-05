@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery Photo Slider</title>
+    <script src="jquery.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slider-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+            background-color: black;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: black;
+        }
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slide {
+            min-width: 100%;
+        }
+        img {
+            width: 100%;
+            display: block;
+        }
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+        }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide">IMAGE5<img src="photo5.jpg" alt="Slide 1"></div>
+            <div class="slide">IMAGE6<img src="photo6.jpg" alt="Slide 2"></div>
+            <div class="slide">IMAGE7 <img src="photo7.jpg" alt="Slide 3"></div>
+            <div class="slide">IMAGE8 <img src="photo8.jpg" alt="Slide 4"></div>
+        </div>
+        <button class="prev">&#10094;</button>
+        <button class="next">&#10095;</button>
+    </div>
+    <script>
+        $(document).ready(function(){
+            let index = 0;
+            const slides = $('.slide');
+            const totalSlides = slides.length;
+
+            function showSlide(i) {
+                if (i >= totalSlides) index = 0;
+                if (i < 0) index = totalSlides - 1;
+                $('.slider').css('transform', `translateX(${-index * 100}%)`);
+            }
+
+            $('.next').click(function(){
+                index++;
+                showSlide(index);
+            });
+
+            $('.prev').click(function(){
+                index--;
+                showSlide(index);
+            });
+
+            function autoSlide() {
+                index++;
+                showSlide(index);
+            }
+
+            let slideInterval = setInterval(autoSlide, 3000);
+
+            $('.slider-container').hover(
+                function() { clearInterval(slideInterval); },
+                function() { slideInterval = setInterval(autoSlide, 3000); }
+            );
+        });
+    </script>
+</body>
+</html>
